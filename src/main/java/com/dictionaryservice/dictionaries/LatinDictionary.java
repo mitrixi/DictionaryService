@@ -1,10 +1,11 @@
 package com.dictionaryservice.dictionaries;
 
 import com.dictionaryservice.LangDictionary;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
+@Component
 public class LatinDictionary extends LangDictionary {
 
     public LatinDictionary(String path) throws IOException {

@@ -1,14 +1,17 @@
 package com.dictionaryservice;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-
+@Component
 public class DictionaryService {
-    static List<LangDictionary> dictionariesList;
     private static LangDictionary langDictionary;
+    private static List<LangDictionary> dictionariesList;
 
     public DictionaryService(List<LangDictionary> list) {
         dictionariesList = list;
@@ -56,7 +59,7 @@ public class DictionaryService {
 
 
     private static void selectDictionary(BufferedReader reader) throws IOException {
-        System.out.println("Please select the appropriate dictionary from list below");
+        System.out.println("Выберите словарь из списка ниже");
         dictionariesList.forEach(System.out::println);
 
         String selectDict = reader.readLine();
@@ -64,6 +67,7 @@ public class DictionaryService {
         for (LangDictionary dictionary : dictionariesList) {
             if (selectDict.equals(dictionary.toString())) {
                 langDictionary = dictionary;
+                System.out.println("Вы выбрали " + dictionary.toString());
             }
         }
     }

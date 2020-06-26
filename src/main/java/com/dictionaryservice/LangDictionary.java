@@ -1,5 +1,8 @@
 package com.dictionaryservice;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
@@ -9,8 +12,7 @@ public abstract class LangDictionary {
     public void setRandomAccessFile(RandomAccessFile raf) {
         this.raf = raf;
     }
-
-
+    
     public void readAllWords() throws IOException {
         String line;
         while ((line = raf.readLine()) != null)
@@ -36,6 +38,7 @@ public abstract class LangDictionary {
                     raf.seek(readPos);
                 }
                 raf.setLength(writePos);
+                System.out.println("Данная запись удалена");
             }
             writePos = raf.getFilePointer();
         }
@@ -68,40 +71,41 @@ public abstract class LangDictionary {
 //    }
 
 
-            public void findByKey (String wordKey) throws IOException {
-                String line;
-                raf.seek(0);
-                while ((line = raf.readLine()) != null)
-                    if (line.startsWith(wordKey))
-                        System.out.println(line);
-            }
+    public void findByKey(String wordKey) throws IOException {
+        String line;
+        raf.seek(0);
+        while ((line = raf.readLine()) != null)
+            if (line.startsWith(wordKey))
+                System.out.println(line);
+    }
 
 
-            public void addWord (String entry) throws IOException {
-                if (this.isValid(entry)) {
-                    raf.seek(raf.length());
-                    raf.write(entry.getBytes(StandardCharsets.UTF_8));
-                    raf.writeChars("\n");
-                }
-            }
-
-
-            protected abstract boolean isValid (String entry) throws IOException;
-
-            protected boolean isExistInDictionary (String entry) throws IOException {
-                String line;
-                raf.seek(0);
-                while ((line = raf.readLine()) != null)
-                    if (line.startsWith(entry.split(" - ")[0]))
-                        return true;
-                return false;
-            }
-
-            public void closeResources () {
-                try {
-                    raf.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+    public void addWord(String entry) throws IOException {
+        if (this.isValid(entry)) {
+            raf.seek(raf.length());
+            raf.write(entry.getBytes(StandardCharsets.UTF_8));
+            raf.writeChars("\n");
+            System.out.println("Запись добавлена в словарь");
         }
+    }
+
+
+    protected abstract boolean isValid(String entry) throws IOException;
+
+    protected boolean isExistInDictionary(String entry) throws IOException {
+        String line;
+        raf.seek(0);
+        while ((line = raf.readLine()) != null)
+            if (line.startsWith(entry.split(" - ")[0]))
+                return true;
+        return false;
+    }
+
+    public void closeResources() {
+        try {
+            raf.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
