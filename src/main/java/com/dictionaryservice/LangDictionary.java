@@ -15,6 +15,7 @@ public abstract class LangDictionary {
     
     public void readAllWords() throws IOException {
         String line;
+        raf.seek(0);
         while ((line = raf.readLine()) != null)
             System.out.println(line);
     }
