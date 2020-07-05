@@ -18,6 +18,11 @@ public class DigitDictionary extends LangDictionary {
     }
 
     @Override
+    public void displayTemplate() {
+        System.out.println("Напишите слово и перевод в формате 'слово - перевод', где 'слово' состоит из 5-и цифр");
+    }
+
+    @Override
     public String toString() {
         return "Digit dictionary";
     }

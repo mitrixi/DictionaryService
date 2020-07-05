@@ -2,6 +2,7 @@ package com.dictionaryservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -12,14 +13,13 @@ public abstract class LangDictionary {
     public void setRandomAccessFile(RandomAccessFile raf) {
         this.raf = raf;
     }
-    
+
     public void readAllWords() throws IOException {
         String line;
         raf.seek(0);
         while ((line = raf.readLine()) != null)
             System.out.println(line);
     }
-
 
     public void deleteByKey(String wordKey) throws IOException {
         String line;
@@ -40,9 +40,11 @@ public abstract class LangDictionary {
                 }
                 raf.setLength(writePos);
                 System.out.println("Данная запись удалена");
+                return;
             }
             writePos = raf.getFilePointer();
         }
+        System.out.println("Такого слова нет в словаре");
     }
 
 
@@ -76,10 +78,13 @@ public abstract class LangDictionary {
         String line;
         raf.seek(0);
         while ((line = raf.readLine()) != null)
-            if (line.startsWith(wordKey))
+            if (line.startsWith(wordKey)) {
                 System.out.println(line);
-    }
+                return;
+            }
+        System.out.println("Такого слова нет в словаре");
 
+    }
 
     public void addWord(String entry) throws IOException {
         if (this.isValid(entry)) {
@@ -87,11 +92,13 @@ public abstract class LangDictionary {
             raf.write(entry.getBytes(StandardCharsets.UTF_8));
             raf.writeChars("\n");
             System.out.println("Запись добавлена в словарь");
-        }
+        } else
+            System.out.println("Введенные данные не соответствуют примеру");
     }
 
-
     protected abstract boolean isValid(String entry) throws IOException;
+
+    public abstract void displayTemplate();
 
     protected boolean isExistInDictionary(String entry) throws IOException {
         String line;

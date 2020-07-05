@@ -18,6 +18,11 @@ public class LatinDictionary extends LangDictionary {
     }
 
     @Override
+    public void displayTemplate() {
+        System.out.println("Напишите слово и перевод в формате 'слово - перевод', где 'слово' состоит из 4-х букв");
+    }
+
+    @Override
     public String toString() {
         return "Latin dictionary";
     }
