@@ -23,7 +23,7 @@ public class LangDictionary {
         String line;
         raf.seek(0);
         while ((line = raf.readLine()) != null)
-            System.out.println(line);
+            OutputChannelInformation.displayMessage(line);
     }
 
     public void deleteByKey(String wordKey) throws IOException {
@@ -44,12 +44,12 @@ public class LangDictionary {
                     raf.seek(readPos);
                 }
                 raf.setLength(writePos);
-                System.out.println("Данная запись удалена");
+                OutputChannelInformation.displayMessage("Данная запись удалена");
                 return;
             }
             writePos = raf.getFilePointer();
         }
-        System.out.println("Такого слова нет в словаре");
+        OutputChannelInformation.displayMessage("Такого слова нет в словаре");
     }
 
 
@@ -84,10 +84,10 @@ public class LangDictionary {
         raf.seek(0);
         while ((line = raf.readLine()) != null)
             if (line.startsWith(wordKey)) {
-                System.out.println(line);
+                OutputChannelInformation.displayMessage(line);
                 return;
             }
-        System.out.println("Такого слова нет в словаре");
+        OutputChannelInformation.displayMessage("Такого слова нет в словаре");
 
     }
 
@@ -96,9 +96,9 @@ public class LangDictionary {
             raf.seek(raf.length());
             raf.write(entry.getBytes(StandardCharsets.UTF_8));
             raf.writeChars("\n");
-            System.out.println("Запись добавлена в словарь");
+            OutputChannelInformation.displayMessage("Запись добавлена в словарь");
         } else
-            System.out.println("Введенные данные не соответствуют примеру");
+            OutputChannelInformation.displayMessage("Введенные данные не соответствуют примеру");
     }
 
     protected boolean isValid(String entry) throws IOException {
@@ -122,7 +122,7 @@ public class LangDictionary {
     }
 
     public void displayTemplate() {
-        System.out.println(displayTemplate);
+        OutputChannelInformation.displayMessage(displayTemplate);
     }
 
     protected boolean isExistInDictionary(String entry) throws IOException {
@@ -136,6 +136,7 @@ public class LangDictionary {
 
     public void closeResources() {
         try {
+            OutputChannelInformation.close();
             raf.close();
         } catch (IOException e) {
             e.printStackTrace();

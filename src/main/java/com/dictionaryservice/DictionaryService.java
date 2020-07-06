@@ -15,7 +15,7 @@ public class DictionaryService {
     }
 
     public void startWork() {
-        System.out.println("Введите \"sd\" для выбора словаря или его смены\n" +
+        OutputChannelInformation.displayMessage("Введите \"sd\" для выбора словаря или его смены\n" +
                 "Для добавления слова в словарь, введите \"aw\" и в новой строке введите слово и перевод\n" +
                 "Для удаления слова из словаря, введите \"dw\" и в новой строке введите необходимое слово\n" +
                 "Для поиска слова по словарю, введите команду \"fw\", после чего в новой строке введите искомое слово\n" +
@@ -40,7 +40,7 @@ public class DictionaryService {
                         langDictionary.addWord(temp);
                         break;
                     case "fw":
-                        System.out.println("Введите слово для поиска");
+                        OutputChannelInformation.displayMessage("Введите слово для поиска");
                         temp = reader.readLine();
                         langDictionary.findByKey(temp);
                         break;
@@ -48,7 +48,7 @@ public class DictionaryService {
                         displayAllWords();
                         break;
                     case "dw":
-                        System.out.println("Введите слово, запись к которому желаете удалить");
+                        OutputChannelInformation.displayMessage("Введите слово, запись к которому желаете удалить");
                         temp = reader.readLine();
                         langDictionary.deleteByKey(temp);
                         break;
@@ -67,10 +67,10 @@ public class DictionaryService {
 
 
     private static void selectDictionary(BufferedReader reader) throws IOException {
-        System.out.println("Выберите номер необходимого словаря из списка ниже");
+        OutputChannelInformation.displayMessage("Выберите номер необходимого словаря из списка ниже");
         int incCount = 0;
         for (LangDictionary dictionary : dictionariesList) {
-            System.out.println(++incCount + " : " + dictionary.getName());
+            OutputChannelInformation.displayMessage(++incCount + " : " + dictionary.getName());
         }
 
         int selectDict;
@@ -79,13 +79,13 @@ public class DictionaryService {
             selectDict = Integer.parseInt(reader.readLine());
             if (selectDict <= dictionariesList.size())
                 break;
-            System.out.println("Введите корректное значение");
+            OutputChannelInformation.displayMessage("Введите корректное значение");
         }
 
         for (int i = 0; i < dictionariesList.size(); i++) {
             if (selectDict == i + 1) {
                 langDictionary = dictionariesList.get(i);
-                System.out.println("Вы выбрали " + dictionariesList.get(i).getName());
+                OutputChannelInformation.displayMessage("Вы выбрали " + dictionariesList.get(i).getName());
             }
         }
     }
