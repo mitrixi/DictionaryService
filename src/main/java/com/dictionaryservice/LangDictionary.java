@@ -1,14 +1,19 @@
 package com.dictionaryservice;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.w3c.dom.ls.LSOutput;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-public abstract class LangDictionary {
+public class LangDictionary {
     private RandomAccessFile raf;
+    private String template;
+    private String displayTemplate;
+    private String name;
+
+    public LangDictionary(String name) throws FileNotFoundException {
+        setRandomAccessFile(new RandomAccessFile(name.trim() + "Dictionary.txt", "rw"));
+    }
 
     public void setRandomAccessFile(RandomAccessFile raf) {
         this.raf = raf;
@@ -96,9 +101,29 @@ public abstract class LangDictionary {
             System.out.println("Введенные данные не соответствуют примеру");
     }
 
-    protected abstract boolean isValid(String entry) throws IOException;
+    protected boolean isValid(String entry) throws IOException {
+        return entry.matches(template);
+    }
 
-    public abstract void displayTemplate();
+    public void setRegExp(String regex) {
+        template = regex;
+    }
+
+    public void setDisplayTemplate(String template) {
+        displayTemplate = template;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void displayTemplate() {
+        System.out.println(displayTemplate);
+    }
 
     protected boolean isExistInDictionary(String entry) throws IOException {
         String line;
